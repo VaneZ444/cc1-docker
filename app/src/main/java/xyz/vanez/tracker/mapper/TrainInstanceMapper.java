@@ -17,6 +17,7 @@ public interface TrainInstanceMapper {
     @Mapping(source = "modelId", target = "model.id")
     TrainInstance toEntity(TrainInstanceDto dto);
 
+    @Mapping(target = "id", ignore = true)
     @Mapping(source = "modelId", target = "model.id")
     void updateEntityFromDto(TrainInstanceDto dto, @MappingTarget TrainInstance entity);
 }

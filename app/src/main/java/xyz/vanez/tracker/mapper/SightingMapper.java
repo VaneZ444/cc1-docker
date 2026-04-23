@@ -17,6 +17,7 @@ public interface SightingMapper {
     @Mapping(source = "instanceId", target = "instance.id")
     Sighting toEntity(SightingDto dto);
 
+    @Mapping(target = "id", ignore = true)
     @Mapping(source = "instanceId", target = "instance.id")
     void updateEntityFromDto(SightingDto dto, @MappingTarget Sighting entity);
 }

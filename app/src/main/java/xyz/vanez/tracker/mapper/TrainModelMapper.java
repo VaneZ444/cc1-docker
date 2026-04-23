@@ -1,5 +1,6 @@
 package xyz.vanez.tracker.mapper;
 
+import org.mapstruct.Mapping;
 import xyz.vanez.tracker.dto.TrainModelDto;
 import xyz.vanez.tracker.model.TrainModel;
 import org.mapstruct.Mapper;
@@ -12,5 +13,7 @@ public interface TrainModelMapper {
 
     TrainModelDto toDto(TrainModel model);
     TrainModel toEntity(TrainModelDto dto);
+
+    @Mapping(target = "id", ignore = true)
     void updateEntityFromDto(TrainModelDto dto, @MappingTarget TrainModel entity);
 }
