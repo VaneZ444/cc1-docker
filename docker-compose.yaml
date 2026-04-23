@@ -1,0 +1,38 @@
+services:
+  db:
+    build: ./db
+    container_name: train_db
+    environment:
+      POSTGRES_DB: train_tracker
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD} 
+    volumes: #сохранение данных при перезапуске контейнера
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+    healthcheck: #проверка готовности базы данных
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d train_tracker"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: ./app
+    container_name: train_app
+    environment:
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "8080:8080"
+    depends_on:
+      db: #ждем бд
+        condition: service_healthy
+    networks:
+      - app-network
+
+networks: #создание сети для взаимодействия контейнеров
+  app-network:
+    driver: bridge
+
+volumes: #том для хранения данных бд
+  postgres_data:
