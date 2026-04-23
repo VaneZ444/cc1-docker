@@ -1,7 +1,7 @@
 package xyz.vanez.tracker.controller;
 
-import xyz.vanez.tracker.dto.TrainInstanceDto;
-import xyz.vanez.tracker.service.TrainInstanceService;
+import xyz.vanez.tracker.dto.SightingDto;
+import xyz.vanez.tracker.service.SightingService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -10,29 +10,29 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/instances")
+@RequestMapping("/api/sightings")
 @RequiredArgsConstructor
-public class TrainInstanceController {
-    private final TrainInstanceService service;
+public class SightingController {
+    private final SightingService service;
 
     @GetMapping
-    public List<TrainInstanceDto> getAll(@RequestParam(required = false) Integer modelId) {
-        return service.getAll(modelId);
+    public List<SightingDto> getAll(@RequestParam(required = false) Integer instanceId) {
+        return service.getAllByInstance(instanceId);
     }
 
     @GetMapping("/{id}")
-    public TrainInstanceDto getById(@PathVariable Integer id) {
+    public SightingDto getById(@PathVariable Integer id) {
         return service.getById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public TrainInstanceDto create(@Valid @RequestBody TrainInstanceDto dto) {
+    public SightingDto create(@Valid @RequestBody SightingDto dto) {
         return service.create(dto);
     }
 
     @PutMapping("/{id}")
-    public TrainInstanceDto update(@PathVariable Integer id, @Valid @RequestBody TrainInstanceDto dto) {
+    public SightingDto update(@PathVariable Integer id, @Valid @RequestBody SightingDto dto) {
         return service.update(id, dto);
     }
 
