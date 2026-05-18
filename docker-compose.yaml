@@ -3,7 +3,7 @@ services:
     build: ./db
     container_name: train_db
     environment:
-      POSTGRES_DB: train_tracker
+      POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD} 
     volumes: #сохранение данных при перезапуске контейнера
@@ -11,7 +11,7 @@ services:
     networks:
       - app-network
     healthcheck: #проверка готовности базы данных
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d train_tracker"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${POSTGRES_DB}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -22,6 +22,7 @@ services:
     environment:
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     ports:
       - "8080:8080"
     depends_on:
