@@ -3,6 +3,7 @@ package xyz.vanez.tracker.service;
 
 import org.springframework.stereotype.Service;
 import xyz.vanez.tracker.dto.TrainInstanceDto;
+import xyz.vanez.tracker.exception.BadRequestException;
 import xyz.vanez.tracker.exception.ResourceNotFoundException;
 import xyz.vanez.tracker.mapper.TrainInstanceMapper;
 import xyz.vanez.tracker.model.TrainInstance;
@@ -46,6 +47,10 @@ public class TrainInstanceService {
     public TrainInstanceDto create(TrainInstanceDto dto) {
         TrainModel model = modelRepository.findById(dto.getModelId())
                 .orElseThrow(() -> new ResourceNotFoundException("Модель с id=" + dto.getModelId() + " не существует"));
+        
+        if (instanceRepository.existsBySerialNumber(dto.getSerialNumber())) {
+            throw new BadRequestException("Экземпляр поезда с серийным номером '" + dto.getSerialNumber() + "' уже существует");
+        }
         TrainInstance entity = mapper.toEntity(dto);
         entity.setModel(model);
         TrainInstance saved = instanceRepository.save(entity);

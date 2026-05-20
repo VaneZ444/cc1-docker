@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface TrainInstanceRepository extends JpaRepository<TrainInstance, Integer> {
     List<TrainInstance> findByModelId(Integer modelId);
+    boolean existsBySerialNumber(String serialNumber);
 }
